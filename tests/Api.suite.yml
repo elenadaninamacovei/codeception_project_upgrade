@@ -1,0 +1,9 @@
+actor: ApiTester
+modules:
+  enabled:
+    - REST:
+        url: https://petstore.swagger.io/v2/
+        depends: PhpBrowser
+    - PhpBrowser:
+        url: https://petstore.swagger.io/v2/
+    - Asserts
