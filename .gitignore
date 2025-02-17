@@ -1,4 +1,4 @@
-/vendor/
+vendor
 .idea/
 tests/_output/
 tests/Support/_generated/

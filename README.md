@@ -16,28 +16,28 @@ git clone https://github.com/elenadaninamacovei/codeception_project_upgrade.git
 
 Install Codeception & other necessary packages using composer:
 ``` 
-php composer.phar install
+composer install        OR        php composer.phar install
 ```
 Check Codeception can be run with:
 ```
-vendor/bin/codecept
+php vendor/bin/codecept
 ```
 Build test classes:
 ```
-vendor/bin/codecept build
+php vendor/bin/codecept build
 ```
 
 ## Run demo API test
 ```
-vendor/bin/codecept run tests/Api/FirstCest.php
+php vendor/bin/codecept run tests/Api/FirstCest.php
 ```
 
 ## Run demo Acceptance test
 Start ChromeDriver & Selenium server
 ```
-java -Dwebdriver.chrome.driver=[PATH_TO_YOUR_CHROMEDRIVER] -jar [PATH_TO_YOUR_SELENIUM_SERVER]/selenium-server-standalone-3.5.3.jar
+java -Dwebdriver.chrome.driver=[PATH_TO_YOUR_CHROMEDRIVER]/chromedriver.exe -jar [PATH_TO_YOUR_SELENIUM_SERVER]/selenium-server-standalone-3.5.3.jar
 ```
 Run demo Acceptance test
 ```
-vendor/bin/codecept run tests/Acceptance/FirstCest.php
+php vendor/bin/codecept run tests/Acceptance/FirstCest.php
 ```
