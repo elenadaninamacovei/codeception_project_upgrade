@@ -19,6 +19,7 @@ class LoginCest {
         $I->expectTo('Login was successful & go to Products page');
         $I->seeInCurrentUrl('/inventory.html');
         $I->see('Products', '.title');
+
     }
 
     public function invalidUsername(AcceptanceTester $I)
