@@ -1,7 +1,7 @@
 {
     "require": {
         "php": ">=8.1",
-        "codeception/codeception": "^5.1",
+        "codeception/codeception": "*",
         "codeception/module-asserts": "^3.0",
         "codeception/module-rest": "^3.4",
         "codeception/module-phpbrowser": "^3.0",
