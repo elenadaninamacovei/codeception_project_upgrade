@@ -9,21 +9,36 @@ class LoginCest {
 
     public function successfulLogin(AcceptanceTester $I) {
         $I->wantToTest('Successful login with a valid user redirects to products listing page');
+        // accesam pagina www.saucedemo.com
         $I->amOnPage('/');
 
-        $I->amGoingTo('Insert a valid username and password & submit');
-        $I->fillField('#user-name', 'standard_user'); // Selectors: #id > .class > XPath
+        // verificam ca exista formularul de login in pagina
+        $I->seeElement('.login_wrapper');
+
+        // verificam ca exista campul "username"
+        $I->seeElement('#user-name');
+
+        // verificam ca exista campul "password"
+        $I->seeElement('#password');
+
+        // in campul "username" introduc un username valid: standard_user
+        $I->fillField('#user-name', 'standard_user');
+
+        // in campul "password" introduc o parola valida: secret_sauce
         $I->fillField('#password', 'secret_sauce');
+
+        // click pe butonul de Login
         $I->click('#login-button');
-        $I->expectTo('Submit form');
 
-        $I->expectTo('Login was successful & go to Products page');
+        // verific ca am fost directionat spre /inventory.html
         $I->seeInCurrentUrl('/inventory.html');
-        $I->see('Products', '.title');
 
-        $I->amGoingTo('check session-username is set');
+        // verific ca este listat pagina de produse
+        $I->see('Products', '.title');
+        $I->seeElement('#inventory_container');
+
+        // verific ca a fost setat cookie "session-username" cu username-ul utilizatorului
         $I->seeCookie('session-username');
-        $I->amGoingTo('check session-username value is correct for standard user');
         $cookieValue = $I->grabCookie('session-username');
         Assert::assertEquals('standard_user', $cookieValue);
     }
