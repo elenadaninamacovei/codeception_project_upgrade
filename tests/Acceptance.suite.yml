@@ -6,8 +6,8 @@
 actor: AcceptanceTester
 modules:
   enabled:
-    #        - PhpBrowser:
-    #            url: https://www.saucedemo.com/
+#    - PhpBrowser:
+#        url: 'https://www.saucedemo.com/'
     - WebDriver:
         url: 'https://www.saucedemo.com/'
         browser: chrome # 'chrome' or 'firefox'

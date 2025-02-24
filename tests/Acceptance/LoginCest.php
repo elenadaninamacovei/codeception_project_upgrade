@@ -3,6 +3,7 @@
 namespace Tests\Acceptance;
 
 use Tests\Support\AcceptanceTester;
+use PHPUnit\Framework\Assert;
 
 class LoginCest {
 
@@ -19,6 +20,12 @@ class LoginCest {
         $I->expectTo('Login was successful & go to Products page');
         $I->seeInCurrentUrl('/inventory.html');
         $I->see('Products', '.title');
+
+        $I->amGoingTo('check session-username is set');
+        $I->seeCookie('session-username');
+        $I->amGoingTo('check session-username value is correct for standard user');
+        $cookieValue = $I->grabCookie('session-username');
+        Assert::assertEquals('standard_user', $cookieValue);
     }
 
     public function invalidUsername(AcceptanceTester $I)
@@ -33,5 +40,6 @@ class LoginCest {
 
         $I->seeCurrentUrlEquals('/');
         $I->see('Epic sadface: Username and password do not match any user in this service', '.error-message-container.error');
+        $I->dontSeeCookie('session-username');
     }
 }
