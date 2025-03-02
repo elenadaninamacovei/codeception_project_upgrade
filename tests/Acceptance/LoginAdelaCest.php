@@ -10,11 +10,10 @@ class LoginAdelaCest
 
         $I->wantToTest('Successful login using registered username and password');
 
-        $loginPage->login(
+        $loginPage->loginSuccessfully(
             'standard_user',
             'secret_sauce',
-            'Epic sadface: Username and password do not match any user in this service',
-            true
+            'Epic sadface: Username and password do not match any user in this service'
         );
     }
     public function invalidCredentials(AcceptanceTester $I, Login $loginPage) {
@@ -24,8 +23,7 @@ class LoginAdelaCest
         $loginPage->login(
             'user_incorrect',
             'wrong_password',
-            'Epic sadface: Username and password do not match any user in this service',
-            false
+            'Epic sadface: Username and password do not match any user in this service'
         );
     }
 
@@ -36,8 +34,7 @@ class LoginAdelaCest
         $loginPage->login(
             '',
             '',
-            'Epic sadface: Username is required',
-            false
+            'Epic sadface: Username is required'
         );
     }
 
@@ -48,8 +45,7 @@ class LoginAdelaCest
         $loginPage->login(
             'secret_sauce',
             'standard_user',
-            'Epic sadface: Username and password do not match any user in this service',
-            false
+            'Epic sadface: Username and password do not match any user in this service'
         );
     }
 
@@ -60,8 +56,7 @@ class LoginAdelaCest
         $loginPage->login(
             'locked_out_user',
             'secret_sauce',
-            'Epic sadface: Sorry, this user has been locked out.',
-            false
+            'Epic sadface: Sorry, this user has been locked out.'
         );
     }
 }
