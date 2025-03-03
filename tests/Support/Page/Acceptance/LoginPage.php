@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Tests\Support\Page\Acceptance;
 
 use Codeception\Lib\Generator\PageObject;

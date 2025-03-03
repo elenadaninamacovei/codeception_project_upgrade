@@ -3,59 +3,44 @@
 namespace Tests\Acceptance;
 
 use Tests\Support\AcceptanceTester;
-use Tests\Support\Page\Acceptance\LoginPage;
 use PHPUnit\Framework\Assert;
 
-class LoginCest
-{
+class LoginCest {
 
-    public function successfulLogin(AcceptanceTester $I)
-    {
+    public function successfulLogin(AcceptanceTester $I) {
         $I->wantToTest('Successful login with a valid user redirects to products listing page');
-        $loginPage = new LoginPage($I);
-
         // accesam pagina www.saucedemo.com
-        // $I->amOnPage('/');
-        $loginPage->accessLoginPage();
+        $I->amOnPage('/');
 
         // verificam ca exista formularul de login in pagina
-        // $I->seeElement('.login_wrapper');
-        $loginPage->seeLoginForm();
+        $I->seeElement('.login_wrapper');
 
         // verificam ca exista campul "username"
-        // $I->seeElement('#user-name');
-        $loginPage->seeUsername();
+        $I->seeElement('#user-name');
 
         // verificam ca exista campul "password"
-        // $I->seeElement('#password');
-        $loginPage->seePassword();
+        $I->seeElement('#password');
 
         // in campul "username" introduc un username valid: standard_user
-        // $I->fillField('#user-name', 'standard_user');
-        $loginPage->fillUsername($_ENV['STANDARD_USER']);
+        $I->fillField('#user-name', 'standard_user');
 
         // in campul "password" introduc o parola valida: secret_sauce
-        // $I->fillField('#password', 'secret_sauce');
-        $loginPage->fillPassword($_ENV['PASSWORD']);
+        $I->fillField('#password', 'secret_sauce');
 
         // click pe butonul de Login
-        // $I->click('#login-button');
-        $loginPage->clickLoginButton();
+        $I->click('#login-button');
 
         // verific ca am fost directionat spre /inventory.html
-        // $I->seeInCurrentUrl('/inventory.html');
-        $loginPage->seeInventoryPage();
+        $I->seeInCurrentUrl('/inventory.html');
 
-        // verific ca este listata pagina de produse
-        // $I->see('Products', '.title');
-        // $I->seeElement('#inventory_container');
-        $loginPage->seeProductsListed();
+        // verific ca este listat pagina de produse
+        $I->see('Products', '.title');
+        $I->seeElement('#inventory_container');
 
         // verific ca a fost setat cookie "session-username" cu username-ul utilizatorului
-        // $I->seeCookie('session-username');
-        // $cookieValue = $I->grabCookie('session-username');
-        // Assert::assertEquals('standard_user', $cookieValue);
-        $loginPage->seeCookie();
+        $I->seeCookie('session-username');
+        $cookieValue = $I->grabCookie('session-username');
+        Assert::assertEquals('standard_user', $cookieValue);
     }
 
     public function invalidUsername(AcceptanceTester $I)
