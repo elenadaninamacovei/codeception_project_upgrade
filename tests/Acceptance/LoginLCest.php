@@ -4,6 +4,7 @@ namespace Tests\Acceptance;
 
 
 
+use Facebook\WebDriver\WebDriverKeys;
 use Tests\Support\AcceptanceTester;
 
 class LoginLCest {
@@ -78,12 +79,13 @@ class LoginLCest {
         $I->see('Epic sadface: Username and password do not match any user in this service', '.error-message-container.error');
         $I->amOnPage('/');
     }
-//    public function NavigateWithTAB(AcceptanceTester $I){
-//        $I->wantToTest('NAVIGATE WITH TAB');
-//        $I->amOnPage('/');
-//        $I->seeElement('#user-name');
-//        $I->pressKey('#user-name', 'TAB');
-//        $I->seeElement('#password);
+    public function NavigateWithTAB(AcceptanceTester $I){
+        $I->wantToTest('NAVIGATE WITH TAB');
+        $I->amOnPage('/');
+        $I->seeElement('#user-name');
+        $I->pressKey('#user-name', WebDriverKeys::TAB);
+        $I->seeElement('#password');
+    }
 
     public function copyPastePasswordOnUsername(AcceptanceTester $I)
     {
@@ -94,18 +96,18 @@ class LoginLCest {
         $I->seeElement('#user-name');
         $I->seeElement('#password');
         // Fill in the password field
-        $I->fillField('#password', 'gresit');
+        $I->fillField('#user-name', 'gresit');
         // Attempt to copy the password value using the Clipboard API
         $I->executeJS("
         if (navigator.clipboard) {
-            navigator.clipboard.writeText(document.getElementById('password').value);
+            navigator.clipboard.writeText(document.getElementById('user-name').value);
         }
     ");
         // Try pasting the password into the username field
         $I->executeJS("
         if (navigator.clipboard && navigator.clipboard.readText) {
             navigator.clipboard.readText().then(function(text) {
-                document.getElementById('user-name').value = text;
+                document.getElementById('password').value = text;
             });
         }
     ");
