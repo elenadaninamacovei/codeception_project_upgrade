@@ -5,7 +5,7 @@ namespace Acceptance;
 use Tests\Support\AcceptanceTester;
 use Tests\Support\Page\Acceptance\LoginPage;
 
-class LoginUsePOMCest
+class LoginExampleUsePOMCest
 {
 
     public function successfulLogin(AcceptanceTester $I)

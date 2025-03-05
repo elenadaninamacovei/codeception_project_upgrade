@@ -5,7 +5,7 @@ namespace Tests\Acceptance;
 use Tests\Support\AcceptanceTester;
 use PHPUnit\Framework\Assert;
 
-class LoginCest {
+class LoginExampleCest {
 
     public function successfulLogin(AcceptanceTester $I) {
         $I->wantToTest('Successful login with a valid user redirects to products listing page');
