@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Acceptance;
+namespace Acceptance\ExampleTests;
 
 use Tests\Support\AcceptanceTester;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Acceptance;
+namespace Acceptance\ExampleTests;
 
-use Tests\Support\AcceptanceTester;
 use PHPUnit\Framework\Assert;
+use Tests\Support\AcceptanceTester;
 
 class LoginExampleCest {
 

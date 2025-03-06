@@ -1,6 +1,6 @@
 <?php
 
-namespace Acceptance;
+namespace Acceptance\ExampleTests;
 
 use Tests\Support\AcceptanceTester;
 use Tests\Support\Page\Acceptance\LoginPage;
