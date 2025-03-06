@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Support\Page\Acceptance;
+namespace Support\Page\Acceptance\ExamplePOM;
 
 use Codeception\Lib\Generator\PageObject;
 use PHPUnit\Framework\Assert;

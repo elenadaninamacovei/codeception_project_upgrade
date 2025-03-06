@@ -2,8 +2,8 @@
 
 namespace Acceptance\ExampleTests;
 
+use Support\Page\Acceptance\ExamplePOM\LoginPage;
 use Tests\Support\AcceptanceTester;
-use Tests\Support\Page\Acceptance\LoginPage;
 
 class LoginExampleUsePOMCest
 {
