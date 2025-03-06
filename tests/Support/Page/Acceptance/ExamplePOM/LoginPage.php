@@ -1,6 +1,6 @@
 <?php
 
-namespace Support\Page\Acceptance\ExamplePOM;
+namespace Tests\Support\Page\Acceptance\ExamplePOM;
 
 use Codeception\Lib\Generator\PageObject;
 use PHPUnit\Framework\Assert;
@@ -47,6 +47,7 @@ class LoginPage extends PageObject
         $I = $this->acceptanceTester;
         $I->seeElement(self::$passwordField);
     }
+
     public function fillUsername($username)
     {
         $I = $this->acceptanceTester;

@@ -5,9 +5,11 @@ namespace Acceptance\ExampleTests;
 use PHPUnit\Framework\Assert;
 use Tests\Support\AcceptanceTester;
 
-class LoginExampleCest {
+class LoginExampleCest
+{
 
-    public function successfulLogin(AcceptanceTester $I) {
+    public function successfulLogin(AcceptanceTester $I)
+    {
         $I->wantToTest('Successful login with a valid user redirects to products listing page');
         // accesam pagina www.saucedemo.com
         $I->amOnPage('/');

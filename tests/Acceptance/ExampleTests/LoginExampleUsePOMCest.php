@@ -2,7 +2,7 @@
 
 namespace Acceptance\ExampleTests;
 
-use Support\Page\Acceptance\ExamplePOM\LoginPage;
+use Tests\Support\Page\Acceptance\ExamplePOM\LoginPage;
 use Tests\Support\AcceptanceTester;
 
 class LoginExampleUsePOMCest

@@ -3,7 +3,7 @@
 namespace Acceptance\LucianTests;
 
 use Tests\Support\AcceptanceTester;
-use  Tests\Support\Page\Acceptance\LucianPOM\InventoryLPage;
+use Tests\Support\Page\Acceptance\LucianPOM\InventoryLPage;
 use Tests\Support\Page\Acceptance\LucianPOM\LoginLPage;
 
 class LoginLwithPOMCest
