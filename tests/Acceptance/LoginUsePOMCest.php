@@ -1,12 +1,11 @@
 <?php
 
-
 namespace Acceptance;
 
 use Tests\Support\AcceptanceTester;
 use Tests\Support\Page\Acceptance\LoginPage;
 
-class LoginwithPOMCest
+class LoginUsePOMCest
 {
 
     public function successfulLogin(AcceptanceTester $I)
@@ -19,7 +18,7 @@ class LoginwithPOMCest
         $loginPage->accessLoginPage();
 
         // verificam ca exista formularul de login in pagina
-        // $I->seeElement('.login_wrapper');git status
+        // $I->seeElement('.login_wrapper');
         $loginPage->seeLoginForm();
 
         // verificam ca exista campul "username"
