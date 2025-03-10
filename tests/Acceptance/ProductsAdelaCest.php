@@ -4,57 +4,62 @@ namespace Acceptance;
 
 use Tests\Support\AcceptanceTester;
 use \Tests\Support\Page\Acceptance\Login;
+use \Tests\Support\Page\Acceptance\Products;
+
+use PHPUnit\Framework\Assert;
 class ProductsAdelaCest
 {
-    public function accessProductsPage(AcceptanceTester $I, Login $loginPage){
-        $loginPage->loginSuccessfully(
-            'standard_user',
-            'secret_sauce',
-            'Epic sadface: Username and password do not match any user in this service'
-        );
+    public function accessProductsPage(AcceptanceTester $I, Login $loginPage, Products $productsPage)
+    {
+        $loginPage->seeLoginForm();
+        $loginPage->submitLoginForm($_ENV['VALID_USERNAME'], $_ENV['VALID_PASSWORD']);
 
-        $I->expectTo('See products page');
+        $loginPage->loginSuccessfully();
 
-        $I->amOnPage('/inventory.html');
-
-        $I->see('Open Menu', '#react-burger-menu-btn');
-
-        $I->seeElement('#shopping_cart_container > a');
+        $productsPage->canSeeTopPage();
+        $productsPage->canSeeProductsCard();
     }
-
-
-
-    public function openMenu(AcceptanceTester $I){
+    public function openMenu(AcceptanceTester $I, Products $productsPage){
         $I->expectTo('To open the menu and see four options');
-        $I->click('#react-burger-menu-btn');
-        $I->see('Open Menu', '#react-burger-menu-btn');
-        $I->seeElement('#menu_button_container > div > div.bm-menu-wrap');
-        $I->see('All Items', '#inventory_sidebar_link');
-        $I->see('About', '#about_sidebar_link');
-        $I->see('Logout', '#logout_sidebar_link');
-        $I->see('Reset App State', '#reset_sidebar_link');
+
+        $productsPage->openMenu();
+
+        $productsPage->canSeeOpenedMenu();
+    }
+    public function closeMenu(AcceptanceTester $I, Products $productsPage) {
+        $I->expectTo('To close the menu');
+        $productsPage->hideMenu();
+        $productsPage->dontSeeMenu();
+    }
+    public function resetApp(AcceptanceTester $I, Products $productsPage) {
+        $productsPage->addToCart();
+
+        $productsPage->productsAddedToCart();
+        $productsPage->openMenu();
+
+        $productsPage->resetAppState();
+        $productsPage->hideMenu();
+        $productsPage->cartEmpty();
     }
 
-    public function closeMenu(AcceptanceTester $I) {
-        $I->click('#inventory_container');
-        $I->dontSeeElement('#menu_button_container > div > div.bm-menu-wrap');
-    }
+    public function checkFilters(AcceptanceTester $I, Products $productsPage){
+        $productsPage->openFilters();
 
-    public function openMenuAgain(AcceptanceTester $I){
-        $I->expectTo('To open the menu and see four options');
-        $I->click('#react-burger-menu-btn');
-        $I->see('Open Menu', '#react-burger-menu-btn');
-        $I->seeElement('#menu_button_container > div > div.bm-menu-wrap');
-        $I->see('All Items', '#inventory_sidebar_link');
-        $I->see('About', '#about_sidebar_link');
-        $I->see('Logout', '#logout_sidebar_link');
-        $I->see('Reset App State', '#reset_sidebar_link');
+        $productsPage->checkFilterOptions();
     }
+    public function sortByName(AcceptanceTester $I, Products $productsPage){
+        $productsPage->openFilters();
 
-    public function logoutUser(AcceptanceTester $I){
-        $I->click('#logout_sidebar_link');
-        $I->amOnPage('/');
-        $I->seeElement('#login_button_container');
+        $productsPage->selectFilterOption('za');
+
+        $productsPage->productsSortedByName('rsort','The product names are sorted from Z to A.');
     }
+    public function sortByPrice(AcceptanceTester $I, Products $productsPage){
+        $productsPage->openFilters();
 
+        $productsPage->selectFilterOption('hilo');
+        $productsPage->productsSortedByPrice('rsort', 'The product price are sorted from high to low.');
+
+
+    }
 }

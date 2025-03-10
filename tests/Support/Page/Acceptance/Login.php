@@ -11,10 +11,17 @@ class Login
      * public $usernameField = '#username';
      * public $formSubmitButton = "#mainForm input[type=submit]";
      */
-    public $usernameField = '#user-name';
-    public $passwordField = '#password';
-    public $loginButton = '#login-button';
-    public $loginForm = '#login_button_container';
+
+    public static $URL = '/';
+    public static $inventoryURL = '/inventory.html';
+    public static $usernameField = '#user-name';
+    public static $passwordField = '#password';
+    public static $loginButton = '#login-button';
+    public static $loginForm = '#login_button_container';
+    public static $pageTitle = '.title';
+    public static $inventoryContainer = '#inventory_container';
+    public static $errorMessage = '.error-message-container.error';
+    public static $checkCookie = 'session-username';
 
     /**
      * @var \Tests\Support\AcceptanceTester;
@@ -26,37 +33,38 @@ class Login
         $this->acceptanceTester = $I;
         // you can inject other page objects here as well
     }
-
-    public function login($username, $password, $outputText) {
+    public function seeLoginForm(){
         $I = $this->acceptanceTester;
 
         $I->amOnPage('/');
-        $I->seeElement($this->loginForm);
+        $I->seeElement(self::$loginForm);
+        $I->seeElement(self::$usernameField);
+        $I->seeElement(self::$passwordField);
+        $I->seeElement(self::$loginButton);
+    }
+    public function submitLoginForm($username, $password){
+        $I = $this->acceptanceTester;
 
         $I->amGoingTo('Insert values for username and password & submit');
-        $I->fillField($this->usernameField, $username);
-        $I->fillField($this->passwordField, $password);
-        $I->click($this->loginButton);
+        $I->fillField(self::$usernameField, $username);
+        $I->fillField(self::$passwordField, $password);
+        $I->click(self::$loginButton);
+    }
+    public function loginError($outputText) {
+        $I = $this->acceptanceTester;
 
         $I->expectTo('See login form with error message');
-        $I->seeCurrentUrlEquals('/');
-        $I->see($outputText, '.error-message-container.error');
+        $I->seeCurrentUrlEquals(self::$URL);
+        $I->see($outputText, self::$errorMessage);
 
     }
-    public function loginSuccessfully($username, $password, $outputText) {
+    public function loginSuccessfully() {
         $I = $this->acceptanceTester;
 
-        $I->amOnPage('/');
-        $I->seeElement($this->loginForm);
-
-        $I->amGoingTo('Insert values for username and password & submit');
-        $I->fillField($this->usernameField, $username);
-        $I->fillField($this->passwordField, $password);
-        $I->click($this->loginButton);
-
         $I->expectTo('Login was successful & go to Products page');
-        $I->seeInCurrentUrl('/inventory.html');
-        $I->see('Products', '.title');
-        $I->seeCookie('session-username');
+        $I->seeInCurrentUrl(self::$inventoryURL);
+        $I->see('Products', self::$pageTitle);
+        $I->seeElement(self::$inventoryContainer);
+        $I->seeCookie(self::$checkCookie);
     }
 }
