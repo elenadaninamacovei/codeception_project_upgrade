@@ -29,7 +29,7 @@ php vendor/bin/codecept build
 
 ## Run demo API test
 ```
-php vendor/bin/codecept run tests/Api/FirstCest.php
+php vendor/bin/codecept run tests/Api/ExampleTests/FirstCest.php
 ```
 
 ## Run demo Acceptance test
@@ -39,5 +39,5 @@ java -Dwebdriver.chrome.driver=[PATH_TO_YOUR_CHROMEDRIVER]/chromedriver.exe -jar
 ```
 Run demo Acceptance test
 ```
-php vendor/bin/codecept run tests/Acceptance/FirstCest.php
+php vendor/bin/codecept run tests/Acceptance/ExampleTests/FirstCest.php
 ```
