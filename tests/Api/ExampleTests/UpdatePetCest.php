@@ -2,8 +2,8 @@
 
 namespace Api\ExampleTests;
 
-use Page\Api\Routes as Route;
 use Tests\Support\ApiTester;
+use Tests\Support\Page\Api\Routes as Route;
 
 class UpdatePetCest
 {

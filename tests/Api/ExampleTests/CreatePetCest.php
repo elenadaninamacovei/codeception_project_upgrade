@@ -3,7 +3,7 @@
 namespace Api\ExampleTests;
 
 use Tests\Support\ApiTester;
-use Page\Api\Routes as Route;
+use Tests\Support\Page\Api\Routes as Route;
 
 class CreatePetCest
 {

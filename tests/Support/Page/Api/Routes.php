@@ -1,5 +1,6 @@
 <?php
-namespace Page\Api;
+
+namespace Tests\Support\Page\Api;
 
 class Routes
 {
