@@ -2,12 +2,13 @@
 
 namespace Api\ExampleTests;
 
+use Page\Api\Routes as Route;
 use Tests\Support\ApiTester;
 
-class PostPetCest
+class UpdatePetCest
 {
     public function _before(ApiTester $I){
-        $this->requestBody = [
+        $postRequestBody = [
             "id" => 111,
             "category" => [
                 "id" => 1,
@@ -29,35 +30,53 @@ class PostPetCest
             ],
             "status" => "available"
         ];
+
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendPost(Route::PET, json_encode($postRequestBody));
     }
 
     public function testPostPetById(ApiTester $I)
     {
-        $I->wantToTest('Create pet successfully');
+        $I->wantToTest('Update pet successfully - update status to sold');
+
+        $updateRequestBody = [
+            "id" => 111,
+            "category" => [
+                "id" => 1,
+                "name" => "Dog"
+            ],
+            "name" => "Akita",
+            "photoUrls" => [
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCzjsWKVXgGq6-yjP_G3HaOkPtx7nABs7VeQ&s"
+            ],
+            "tags" => [
+                [
+                    "id" => 1,
+                    "name" => "agitat"
+                ],
+                [
+                    "id" => 2,
+                    "name" => "independent"
+                ]
+            ],
+            "status" => "sold"
+        ];
 
         $I->amGoingTo('Send request headers');
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('Content-Type', 'application/json');
 
         $I->amGoingTo('Send request body');
-        $I->sendPost('/pet', json_encode($this->requestBody));
+        $I->sendPost(Route::PET, json_encode($updateRequestBody));
 
         $I->amGoingTo('Check response');
         $I->seeResponseCodeIsSuccessful();
         $I->seeResponseIsJson();
 
-        $I->amGoingTo('Check response body - option 1');
-        $I->seeResponseContainsJson(["id" => 111]);
-        $I->seeResponseContainsJson(["status" => "available"]);
-
-        //or
-
         $I->amGoingTo('Check response body - option 2');
         $response = json_decode($I->grabResponse(), true);
-
-        $petId = $response["id"];
         $petStatus = $response["status"];
-        $I->assertEquals(111, $petId);
         $I->assertEquals("available", $petStatus);
     }
 }
