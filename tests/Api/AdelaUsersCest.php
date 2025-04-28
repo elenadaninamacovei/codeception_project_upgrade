@@ -3,9 +3,6 @@
 namespace Tests\Api;
 
 use Tests\Support\ApiTester;
-use \Tests\Support\Page\Api\Users;
-use \Tests\Support\Page\Api\SendRequests;
-use \Tests\Support\Page\Api\SetHeaders;
 
 class AdelaUsersCest
 {
@@ -34,30 +31,32 @@ class AdelaUsersCest
             "phone" => "0734674321",
             "userStatus" => 0
         ];
+
+        $this->nonexistingUser = 'testBoldeanuAdelaTest';
     }
 
-    public function addNewUserSuccessfully(ApiTester $I, Users $user, SendRequests $sendRequest, SetHeaders $setHeader){
+    public function addNewUserSuccessfully(ApiTester $I){
         $I->wantToTest('Create user successfully');
 
-        $setHeader->addHeaders();
+        $I->addHeaders();
 
-        $sendRequest->sendPostRequest('/user/createWithList', $this->requestAddUser);
+        $I->sendPostRequest('/user/createWithList', $this->requestAddUser);
 
-        $user->checkResponseSuccessfull();
+        $I->checkResponseSuccessfull();
 
-        $user->checkResonseBody(["code" => 200, "message" => "ok"]);
+        $I->checkResponseBody(["code" => 200, "message" => "ok"]);
     }
 
-    public function retrieveUser(ApiTester $I, Users $user, SendRequests $sendRequest, SetHeaders $setHeader){
+    public function retrieveUser(ApiTester $I){
         $I->wantToTest('Retrieve user successfully');
 
-        $setHeader->addHeaders();
+        $I->addHeaders();
 
-        $sendRequest->sendGetRequest('/user/BoldeanuAdela');
+        $I->sendGetRequest('/user/'.$this->requestAddUser['username']);
 
-        $user->checkResponseSuccessfull();
+        $I->checkResponseSuccessfull();
 
-        $user->checkResonseBody([
+        $I->checkResponseBody([
             "username" => $this->requestAddUser[0]['username'],
             "firstName" => $this->requestAddUser[0]['firstName'],
             "lastName" => $this->requestAddUser[0]['lastName'],
@@ -65,39 +64,39 @@ class AdelaUsersCest
             "phone" => $this->requestAddUser[0]['phone']
         ]);
     }
-    public function retrieveNonexistendUser(ApiTester $I, Users $user, SendRequests $sendRequest, SetHeaders $setHeader){
+    public function retrieveNonexistendUser(ApiTester $I){
         $I->wantToTest('Retrieve user successfully');
 
-        $setHeader->addHeaders();
+        $I->addHeaders();
 
-        $sendRequest->sendGetRequest('/user/testBoldeanuAdelaTest');
+        $I->sendGetRequest('/user/'.$this->nonexistingUser);
 
-        $user->checkResponseUnsuccessfull();
+        $I->checkResponseUnsuccessfull();
 
-        $user->checkResonseBody(["message" => "User not found"]);
+        $I->checkResponseBody(["message" => "User not found"]);
     }
 
-    public function updateUser(ApiTester $I, Users $user, SendRequests $sendRequest, SetHeaders $setHeader){
+    public function updateUser(ApiTester $I){
         $I->wantToTest('Update user successfully');
 
-        $setHeader->addHeaders();
+        $I->addHeaders();
 
-        $sendRequest->sendPutRequest('/user/BoldeanuAdela',$this->requestUpdateUser);
+        $I->sendPutRequest('/user/'.$this->requestAddUser['username'],$this->requestUpdateUser);
 
-        $user->checkResponseSuccessfull();
+        $I->checkResponseSuccessfull();
 
-        $user->checkResonseBody(["code" => 200]);
+        $I->checkResponseBody(["code" => 200]);
     }
 
-    public function deleteUser(ApiTester $I, Users $user, SendRequests $sendRequest, SetHeaders $setHeader){
+    public function deleteUser(ApiTester $I, ){
         $I->wantToTest('Delete user successfully');
 
-        $setHeader->addHeaders();
+        $I->addHeaders();
 
-        $sendRequest->sendDeleteRequest('/user/BoldeanuAdelaUpdate');
+        $I->sendDeleteRequest('/user/'.$this->requestUpdateUser['username']);
 
-        $user->checkResponseSuccessfull();
+        $I->checkResponseSuccessfull();
 
-        $user->checkResonseBody(["code" => 200, "message" => $this->requestUpdateUser['username']]);
+        $I->checkResponseBody(["code" => 200, "message" => $this->requestUpdateUser['username']]);
     }
 }

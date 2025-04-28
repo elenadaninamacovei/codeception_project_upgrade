@@ -3,9 +3,6 @@
 namespace Tests\Api;
 
 use Tests\Support\ApiTester;
-use \Tests\Support\Page\Api\Store;
-use \Tests\Support\Page\Api\SendRequests;
-use \Tests\Support\Page\Api\SetHeaders;
 
 class AdelaStoreCest
 {
@@ -19,26 +16,28 @@ class AdelaStoreCest
             "status" => "placed",
             "complete" => true
         ];
+
+        $this->getById = '7';
     }
-    public function getInventory(ApiTester $I, Store $store, SendRequests $sendRequest, SetHeaders $setHeader){
+    public function getInventory(ApiTester $I){
         $I->wantToTest('Retrieve user successfully');
 
-        $setHeader->addHeaders();
+        $I->addHeaders();
 
-        $sendRequest->sendGetRequest('/store/inventory');
+        $I->sendGetRequest('/store/inventory');
 
-        $store->checkResponseSuccessfull();
+        $I->checkResponseSuccessfull();
 
         $I->seeResponseMatchesJsonType(['BerneseMountainDog' => 'integer']);
     }
 
-    public function addOrder(ApiTester $I, Store $store, SendRequests $sendRequest, SetHeaders $setHeader){
-        $setHeader->addHeaders();
-        $sendRequest->sendPostRequest('/store/order', $this->addOrder);
-        $store->checkResponseSuccessfull();
+    public function addOrder(ApiTester $I){
+        $I->addHeaders();
+        $I->sendPostRequest('/store/order', $this->addOrder);
 
-        $I->amGoingTo('Check response body');
-        $I->seeResponseContainsJson([
+        $I->checkResponseSuccessfull();
+
+        $I->checkResponseBody([
             "id" => $this->addOrder['id'],
             "petId" => $this->addOrder['petId'],
             "quantity" => $this->addOrder['quantity'],
@@ -47,13 +46,13 @@ class AdelaStoreCest
         ]);
     }
 
-    public function retrieveOrder(ApiTester $I, Store $store, SendRequests $sendRequest, SetHeaders $setHeader){
-        $setHeader->addHeaders();
-        $sendRequest->sendGetRequest('/store/order/7');
-        $store->checkResponseSuccessfull();
+    public function retrieveOrder(ApiTester $I){
+        $I->addHeaders();
+        $I->sendGetRequest('/store/order/'.$this->getById);
 
-        $I->amGoingTo('Check response body');
-        $I->seeResponseContainsJson([
+        $I->checkResponseSuccessfull();
+
+        $I->checkResponseBody([
             "id" => $this->addOrder['id'],
             "petId" => $this->addOrder['petId'],
             "quantity" => $this->addOrder['quantity'],
@@ -62,13 +61,12 @@ class AdelaStoreCest
         ]);
     }
 
-    public function deleteOrder(ApiTester $I, Store $store, SendRequests $sendRequest, SetHeaders $setHeader){
-        $setHeader->addHeaders();
-        $sendRequest->sendDeleteRequest('/store/order/7');
-        $store->checkResponseSuccessfull();
+    public function deleteOrder(ApiTester $I){
+        $I->addHeaders();
+        $I->sendDeleteRequest('/store/order/'.$this->getById);
+        
+        $I->checkResponseSuccessfull();
 
-        $I->amGoingTo('Check response body');
-        $I->seeResponseContainsJson(['code' => 200]);
-        $I->seeResponseContainsJson(['message' => $this->addOrder['id']]);
+        $I->checkResponseBody(['code' => 200, 'message' => $this->addOrder['id']]); 
     }
 }

@@ -3,21 +3,28 @@
 namespace Tests\Api;
 
 use Tests\Support\ApiTester;
-use \Tests\Support\Page\Api\Store;
-use \Tests\Support\Page\Api\SendRequests;
-use \Tests\Support\Page\Api\SetHeaders;
+use \Codeception\Attribute\DataProvider;
+use \Codeception\Example;
+
 
 class AdelaPetsCest
 {
 
-    public function _before(ApiTester $I){
-        $this->AddPetRequeste = [
-            "id" => 99,
+        /**
+     * Data provider for adding pet data
+     * 
+     * @return array
+     */
+    protected function addPetData(){
+      return [
+        [ 
+          'data' => [
+            "id" => 98,
             "category" => [
               "id" => 0,
-              "name" => "Mountain dog"
+              "name" => "Mountain dog 1"
             ],
-            "name" => "BerneseMountainDog",
+            "name" => "BerneseMountainDog 1",
             "photoUrls" => [
               "BerneseMountainDogImage"
             ],
@@ -36,20 +43,53 @@ class AdelaPetsCest
               ]
             ],
             "status" => "BerneseMountainDog"
-        ];
+          ]
+        ],
+        [
+          'data' => [
+            "id" => 99,
+            "category" => [
+              "id" => 0,
+              "name" => "Mountain dog 2"
+            ],
+            "name" => "BerneseMountainDog 2",
+            "photoUrls" => [
+              "BerneseMountainDogImage"
+            ],
+            "tags" => [
+              [
+                "id" => 0,
+                "name" => "bernese"
+              ],
+              [
+                "id" => 1,
+                "name" => "mountain"
+              ],
+              [
+                "id" => 2,
+                "name" => "dog"
+              ]
+            ],
+            "status" => "BerneseMountainDog"
+          ]
+        ]
+      ];
     }
-    public function addPet(ApiTester $I, SendRequests $sendRequest, SetHeaders $setHeader){
+    /**
+     * Test user creation with multiple sets of data using the data provider.
+     * 
+     * @dataProvider addPetData
+     */
+    public function addPet(ApiTester $I, \Codeception\Example $example){
+      
         $I->wantToTest('Create pet successfully');
 
-        $setHeader->addHeaders();
+        $I->addHeaders();
 
-        $sendRequest->sendPostRequest('/pet', $this->AddPetRequeste);
+        $I->sendPostRequest('/pet', $example['data']);
 
-        $I->amGoingTo('Check response');
-        $I->seeResponseCodeIsSuccessful();
-        $I->seeResponseIsJson();
+        $I->checkResponseSuccessfull();
 
-        $I->amGoingTo('Check response body');
-        $I->seeResponseContainsJson($this->AddPetRequeste);
+        $I->checkResponseBody(['name' => $example['data']['name'], 'category' => $example['data']['category'], 'status' => $example['data']['status']]);
     }
 }

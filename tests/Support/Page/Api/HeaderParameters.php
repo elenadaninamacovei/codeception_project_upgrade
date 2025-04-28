@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Support\Page\Api;
 
-class Store
+class HeaderParameters
 {
     /**
      * Declare UI map for this page here. CSS or XPath allowed.
@@ -15,20 +15,16 @@ class Store
     /**
      * @var \Tests\Support\ApiTester;
      */
-    protected $apiTester;
 
-    public function __construct(\Tests\Support\ApiTester $I)
+    public function __construct()
     {
-        $this->apiTester = $I;
         // you can inject other page objects here as well
     }
 
-    public function checkResponseSuccessfull(){
-        $I = $this->apiTester;
-        
-        $I->amGoingTo('Check response');
-        $I->seeResponseCodeIsSuccessful();
-        $I->seeResponseIsJson();
+    public function returnHeadersParam(){
+        return [
+            'acceptHeader' => 'application/json',
+        ];
     }
 
 }

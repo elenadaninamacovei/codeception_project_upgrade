@@ -7,3 +7,6 @@ modules:
     - PhpBrowser:
         url: https://petstore.swagger.io/v2/
     - Asserts
+    - Tests\Support\Helper\SendRequests
+    - Tests\Support\Helper\SetHeaders
+    - Tests\Support\Helper\CheckResponse
