@@ -5,7 +5,7 @@ pipeline {
             steps {
                 echo 'Build..'
                 sh '''
-                    php -v
+                    composer install ./vendor/bin/codecept run
                 '''
             }
         }
