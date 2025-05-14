@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build..'
-                sh '''
+                bat '''
                     composer install ./vendor/bin/codecept run
                 '''
             }
