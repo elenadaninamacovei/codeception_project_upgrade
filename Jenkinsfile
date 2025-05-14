@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build..'
-                sh 'php composer.phar install'
+                sh 'php vendor/bin/codecept run'
             }
         }
 
