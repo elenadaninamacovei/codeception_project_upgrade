@@ -8,7 +8,7 @@ pipeline {
                     php -v
                 '''
                 bat '''
-                    composer install
+                    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
                 '''
             }
         }
