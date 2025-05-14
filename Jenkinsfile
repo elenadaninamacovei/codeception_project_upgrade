@@ -14,6 +14,9 @@ pipeline {
                 bat '''php composer-setup.php'''
                 bat '''php -r "unlink('composer-setup.php');"'''
                 bat 'php composer.phar -v'
+                bat '''php composer.phar install'''
+                bat 'php vendor/bin/codecept'
+                bat 'php vendor/bin/codecept build'
             
             }
         }
