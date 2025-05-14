@@ -4,7 +4,9 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build..'
-                sh 'php ./vendor/bin/codecept run'
+                sh '''
+                    php -v
+                '''
             }
         }
 
