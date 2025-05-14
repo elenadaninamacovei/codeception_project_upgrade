@@ -8,7 +8,7 @@ pipeline {
                     php -v
                 '''
                 bat '''
-                    php composer.phar install
+                    composer install
                 '''
             }
         }
