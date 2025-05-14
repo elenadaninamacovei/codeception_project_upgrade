@@ -6,6 +6,8 @@ pipeline {
                 echo 'Build..'
                 bat '''
                     php -v
+                '''
+                bat '''
                     composer -v
                 '''
             }
