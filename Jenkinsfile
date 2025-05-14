@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build..'
-                sh 'php vendor/bin/codecept run tests/Api/AdelaPetsCest.php'
+                sh 'php composer.phar install'
             }
         }
 
