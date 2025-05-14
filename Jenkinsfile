@@ -17,6 +17,7 @@ pipeline {
                 bat '''php composer.phar install'''
                 bat 'php vendor/bin/codecept'
                 bat 'php vendor/bin/codecept build'
+                bat 'php vendor/bin/codecept run tests/Api/AdelaPetsCest.php'
             
             }
         }
