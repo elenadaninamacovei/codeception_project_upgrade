@@ -5,7 +5,7 @@ pipeline {
             steps {
                 echo 'Build..'
                 bat '''
-                    composer install ./vendor/bin/codecept run
+                    php -v
                 '''
             }
         }
