@@ -72,7 +72,7 @@ pipeline {
                             try {
                                 def runTests = [:]
 
-                                def testPaths = sh(
+                                def testPaths = bat(
                                     script: "find ${it.path}/* -name '*Cest.php'",
                                     returnStdout: true
                                 ).split('\n')
@@ -81,7 +81,7 @@ pipeline {
                                 testPaths.each { testPath ->
                                     def testName = testPath.tokenize('/')[-1].replace('.php', '')
                                     runTests[testPath] = {
-                                        def result = sh(script: "./bin/codecept run ${testPath} --html=tsl-${testName}.html", returnStatus: true)
+                                        def result = bat(script: "./bin/codecept run ${testPath} --html=tsl-${testName}.html", returnStatus: true)
                                         if (result != 0) {
                                             failedTests.add("tsl-${testName}.html")
                                             failedTestsPaths.add(testPath)
