@@ -72,20 +72,12 @@ pipeline {
                             try {
                                 def runTests = [:]
 
-                                def testPaths = bat(
-                                    script: "find ${it.path}/* -name '*Cest.php'",
-                                    returnStdout: true
-                                ).split('\n')
-
-                                // Run tests in parallel
-                                testPaths.each { testPath ->
-                                    def testName = testPath.tokenize('/')[-1].replace('.php', '')
-                                    runTests[testPath] = {
-                                        def result = bat(script: "./bin/codecept run ${testPath} --html=tsl-${testName}.html", returnStatus: true)
-                                        if (result != 0) {
-                                            failedTests.add("tsl-${testName}.html")
-                                            failedTestsPaths.add(testPath)
-                                        }
+                                def testName = it.path.tokenize('/')[-1].replace('.php', '')
+                                runTests[it.path] = {
+                                    def result = bat(script: "./bin/codecept run ${it.path} --html=tsl-${testName}.html", returnStatus: true)
+                                    if (result != 0) {
+                                        failedTests.add("tsl-${testName}.html")
+                                        failedTestsPaths.add(it.path)
                                     }
                                 }
                                 parallel runTests
