@@ -65,20 +65,19 @@ pipeline {
             steps {
                 
                 script {
-
+                    def testSuites = [:]
                     if(params.specificTestPath?.trim()){
                         echo "Running specific test(s): ${params.specificTestPath}"
-                        def runSpecific = [:]
 
-                        def testPaths = params.specificTestPath.split(',').collect { it.trim() }.findAll { it }.collect { [flag: true, path: "'${it}'"] }
-
-                        echo "${testPaths}"
+                        testSuites = params.specificTestPath.split(',').collect { it.trim() }.findAll { it }.collect { [flag: true, path: "'${it}'"] }
+                    } else {
+                        testSuites = [
+                            [flag: params.runPets, path: 'tests/Api/AdelaPetsCest'],
+                            [flag: params.runStore, path: 'tests/Api/AdelaStoreCest'],
+                            [flag: params.runUsers, path: 'tests/Api/AdelaUsersCest'],
+                        ]
                     }
-                    def testSuites = [
-                        [flag: params.runPets, path: 'tests/Api/AdelaPetsCest'],
-                        [flag: params.runStore, path: 'tests/Api/AdelaStoreCest'],
-                        [flag: params.runUsers, path: 'tests/Api/AdelaUsersCest'],
-                    ]
+                    
                     testSuites.each {
                         if (it.flag) {
                             echo "Running ${it.path} tests..."
