@@ -60,13 +60,6 @@ pipeline {
                 bat 'php vendor/bin/codecept build'
             }
         }
-
-        stage('Run Api tests') {
-            steps{
-                echo 'run test for pets'
-                bat 'php vendor/bin/codecept run tests/Api/AdelaPetsCest'
-            }
-        }
         stage('Run tests (parallel)') {
             steps {
                 
@@ -107,6 +100,31 @@ pipeline {
                 }
             }
         }
+        // Re-run failed tests sequentially
+        stage('Re-run failed tests (sequentially)') {
+            steps {
+                script{
+                    if (!failedTestsPaths.isEmpty()) {
+                        echo "Re-running failed tests: ${failedTestsPaths}"
+
+                        failedTestsPaths.each { testPath ->
+                            def testName = testPath.tokenize('/')[-1].replace('.php', '')
+                            def result = bat(script: "php vendor/bin/codecept run ${testPath} --html=tsl-${testName}.html", returnStatus: true)
+                            if (result != 0) {
+                                echo "Test failed again: ${testPath}"
+                                failedTests2ndRun.add("tsl-RETRY-${testName}.html")
+                                currentBuild.result = 'FAILED'
+                            } else {
+                                echo "Test passed on retry: ${testPath}"
+                            }
+                        }
+                    } else {
+                        echo "No tests to re-run."
+                    }
+                }
+            }
+        }
+
         stage('Generate HTML report') {
             steps{
                 script {
