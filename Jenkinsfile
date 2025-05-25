@@ -2,16 +2,9 @@
 pipeline {
     agent any
     parameters {
-                string(name: 'specificTestPath', defaultValue: '', description: '(Optional) If you dont want to run an entire directory, just add path(s) to specific tests to run separated by comma (e.g: tests/acceptance/Search/TestACest.php, tests/acceptance/Resealed/TestBCest.php)')
-
-                booleanParam(name: 'runResealed', defaultValue: true, description: 'Set to true to run Resealed tests')
-                booleanParam(name: 'runVendor', defaultValue: true, description: 'Set to true to run Vendor tests')
-                booleanParam(name: 'runSdCatalog', defaultValue: true, description: 'Set to true to run SdCatalog tests')
-                booleanParam(name: 'runListing', defaultValue: true, description: 'Set to true to run Listing tests')
-                booleanParam(name: 'runSearch', defaultValue: true, description: 'Set to true to run Search tests')
-                booleanParam(name: 'runFastDelivery', defaultValue: false, description: 'Set to true to run Fast Delivery Filter tests')
-                booleanParam(name: 'runHiddenCateg', defaultValue: false, description: 'Set to true to run Hidden Categories tests')
-                booleanParam(name: 'runMobile', defaultValue: false, description: 'Set to true to run Mobile tests')
+                booleanParam(name: 'runPets', defaultValue: true, description: 'Set to true to run Pets store tests')
+                booleanParam(name: 'runStore', defaultValue: false, description: 'Set to true to run Store tests')
+                booleanParam(name: 'runUsers', defaultValue: false, description: 'Set to true to run Users tests')
     }
     stages {
         stage('Verify php version') {
@@ -62,6 +55,54 @@ pipeline {
             steps{
                 echo 'run test for pets'
                 bat 'php vendor/bin/codecept run tests/Api/AdelaPetsCest'
+            }
+        }
+        stage('Run tests (parallel)') {
+            steps {
+                scripts {
+                    def testSuites = [
+                        [flag: params.runPets, path: 'tests/Api/AdelaPetsCest'],
+                        [flag: params.runStore, path: 'tests/acceptance/AdelaStoreCest'],
+                        [flag: params.runUsers, path: 'tests/acceptance/AdelaUsersCest'],
+                    ]
+
+                    testSuites.each {
+                        if (it.flag) {
+                            echo "Running ${it.path} tests..."
+                            try {
+                                def runTests = [:]
+
+                                def testPaths = sh(
+                                    script: "find ${it.path}/* -name '*Cest.php'",
+                                    returnStdout: true
+                                ).split('\n')
+
+                                // Run tests in parallel
+                                testPaths.each { testPath ->
+                                    def testName = testPath.tokenize('/')[-1].replace('.php', '')
+                                    runTests[testPath] = {
+                                        def result = sh(script: "./bin/codecept run ${testPath} --html=tsl-${testName}.html", returnStatus: true)
+                                        if (result != 0) {
+                                            failedTests.add("tsl-${testName}.html")
+                                            failedTestsPaths.add(testPath)
+                                        }
+                                    }
+                                }
+                                parallel runTests
+
+                                if (!failedTestsPaths.isEmpty()){
+                                    echo "Some tests failed: ${failedTestsPaths}"
+                                }
+                            } catch (Exception e) {
+                                echo "Error when running tests in ${it.path}: ${e.getMessage()}"
+                                currentBuild.result = 'FAILED'
+                            }
+
+                        } else {
+                            echo "Skipping ${it.path} tests..."
+                        }
+                    }
+                }
             }
         }
         stage('Generate HTML report') {
