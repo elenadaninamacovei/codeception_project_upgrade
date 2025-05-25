@@ -59,13 +59,12 @@ pipeline {
         }
         stage('Run tests (parallel)') {
             steps {
-                scripts {
-                    def testSuites = [
-                        [flag: params.runPets, path: 'tests/Api/AdelaPetsCest'],
-                        [flag: params.runStore, path: 'tests/acceptance/AdelaStoreCest'],
-                        [flag: params.runUsers, path: 'tests/acceptance/AdelaUsersCest'],
-                    ]
-
+                def testSuites = [
+                    [flag: params.runPets, path: 'tests/Api/AdelaPetsCest'],
+                    [flag: params.runStore, path: 'tests/acceptance/AdelaStoreCest'],
+                    [flag: params.runUsers, path: 'tests/acceptance/AdelaUsersCest'],
+                ]
+                script {
                     testSuites.each {
                         if (it.flag) {
                             echo "Running ${it.path} tests..."
