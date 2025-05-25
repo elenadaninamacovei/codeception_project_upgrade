@@ -69,7 +69,7 @@ pipeline {
                     if(params.specificTestPath?.trim()){
                         echo "Running specific test(s): ${params.specificTestPath}"
 
-                        testSuites = params.specificTestPath.split(',').collect { it.trim() }.findAll { it }.collect { [flag: true, path: "'${it}'"] }
+                        testSuites = params.specificTestPath.split(',').collect { it.trim() }.findAll { it }.collect { [flag: true, path: it] }
                     } else {
                         testSuites = [
                             [flag: params.runPets, path: 'tests/Api/AdelaPetsCest'],
