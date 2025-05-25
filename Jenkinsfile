@@ -75,7 +75,7 @@ pipeline {
                             echo "Running ${it.path} tests..."
                             try {
                                 def runTests = [:]
-                                echo "${it.path.tokenize('/')[-1]}"
+                                echo "${it.path}"
 
                                 def testName = it.path.tokenize('/')[-1].replace('.php', '')
                                 
