@@ -1,7 +1,7 @@
 
 pipeline {
     agent any
-    parameters([
+    parameters {
                 string(name: 'specificTestPath', defaultValue: '', description: '(Optional) If you dont want to run an entire directory, just add path(s) to specific tests to run separated by comma (e.g: tests/acceptance/Search/TestACest.php, tests/acceptance/Resealed/TestBCest.php)'),
 
                 booleanParam(name: 'runResealed', defaultValue: true, description: 'Set to true to run Resealed tests'),
@@ -12,7 +12,7 @@ pipeline {
                 booleanParam(name: 'runFastDelivery', defaultValue: false, description: 'Set to true to run Fast Delivery Filter tests'),
                 booleanParam(name: 'runHiddenCateg', defaultValue: false, description: 'Set to true to run Hidden Categories tests'),
                 booleanParam(name: 'runMobile', defaultValue: false, description: 'Set to true to run Mobile tests')
-            ])
+    }
     stages {
         stage('Verify php version') {
             steps {
