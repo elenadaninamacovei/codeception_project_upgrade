@@ -4,7 +4,7 @@ def failedTests2ndRun = []
 pipeline {
     agent any
     parameters {
-        string(name: 'specificTestPath', defaultValue: '', description: '(Optional) If you dont want to run an entire directory, just add path(s) to specific tests to run separated by comma (e.g: tests/Api/AdelaPetsCest, tests/Api/AdelaUsersCest)')
+        string(name: 'specificTestPath', defaultValue: '', description: '(Optional) If you dont want to run an entire directory, just add path(s) to specific tests to run separated by comma (e.g: tests/Api/AdelaPetsCest, tests/Api/AdelaStoreCest)')
         booleanParam(name: 'runPets', defaultValue: true, description: 'Set to true to run Pets store tests')
         booleanParam(name: 'runStore', defaultValue: false, description: 'Set to true to run Store tests')
         booleanParam(name: 'runUsers', defaultValue: false, description: 'Set to true to run Users tests')
@@ -141,7 +141,7 @@ pipeline {
                             allowMissing: false,
                             alwaysLinkToLastBuild: true,
                             keepAll: true,
-                            reportDir: 'tests\\_output',
+                            reportDir: 'tests/_output',
                             reportFiles: 'tsl-*.html',
                             reportName: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}",
                             reportTitles: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}"
@@ -149,6 +149,29 @@ pipeline {
                     } catch (Exception e) {
                         echo "Error when generating report: ${e.getMessage()}"
                         currentBuild.result = 'UNSTABLE'
+                    }
+                }
+            }
+        }
+        stage('Send email') {
+            steps {
+                script {
+                    try {
+                        // Set currentBuild.result to SUCCESS if it's not set to FAILED
+                        if (currentBuild.result == null) {
+                            currentBuild.result = 'SUCCESS'
+                        }
+                        def failedTestFiles = failedTests2ndRun.collect { "tests/_output/${it}" }.join(',')
+                        emailext subject: "${currentBuild.result} for ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                            attachmentsPattern: failedTestFiles,
+                            mimeType: "text/html",
+                            body: """<p>${currentBuild.result} for ${env.JOB_NAME} #${env.BUILD_NUMBER}:</p>
+                                    <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>
+                                    """,
+                            recipientProviders: [requestor()],
+                            to: 'adela.boldeanu@yahoo.ro'
+                    } catch (Exception e) {
+                        echo "Error when sending email: ${e.getMessage()}"
                     }
                 }
             }
