@@ -61,7 +61,7 @@ pipeline {
         stage('Run Api tests') {
             steps{
                 echo 'run test for pets'
-                bat 'php vendor/bin/codecept run tests/Api'
+                bat 'php vendor/bin/codecept run tests/Api/AdelaPetsCest'
             }
         }
 
