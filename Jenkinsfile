@@ -141,7 +141,7 @@ pipeline {
                             allowMissing: false,
                             alwaysLinkToLastBuild: true,
                             keepAll: true,
-                            reportDir: 'tests/_output/',
+                            reportDir: 'tests\_output',
                             reportFiles: 'tsl-*.html',
                             reportName: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}",
                             reportTitles: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}"
