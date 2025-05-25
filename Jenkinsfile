@@ -66,8 +66,8 @@ pipeline {
                 script {
                     def testSuites = [
                         [flag: params.runPets, path: 'tests/Api/AdelaPetsCest'],
-                        [flag: params.runStore, path: 'tests/acceptance/AdelaStoreCest'],
-                        [flag: params.runUsers, path: 'tests/acceptance/AdelaUsersCest'],
+                        [flag: params.runStore, path: 'tests/Api/AdelaStoreCest'],
+                        [flag: params.runUsers, path: 'tests/Api/AdelaUsersCest'],
                     ]
                     testSuites.each {
                         if (it.flag) {
