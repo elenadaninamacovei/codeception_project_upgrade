@@ -1,5 +1,18 @@
+
 pipeline {
     agent any
+    parameters([
+                string(name: 'specificTestPath', defaultValue: '', description: '(Optional) If you dont want to run an entire directory, just add path(s) to specific tests to run separated by comma (e.g: tests/acceptance/Search/TestACest.php, tests/acceptance/Resealed/TestBCest.php)'),
+
+                booleanParam(name: 'runResealed', defaultValue: true, description: 'Set to true to run Resealed tests'),
+                booleanParam(name: 'runVendor', defaultValue: true, description: 'Set to true to run Vendor tests'),
+                booleanParam(name: 'runSdCatalog', defaultValue: true, description: 'Set to true to run SdCatalog tests'),
+                booleanParam(name: 'runListing', defaultValue: true, description: 'Set to true to run Listing tests'),
+                booleanParam(name: 'runSearch', defaultValue: true, description: 'Set to true to run Search tests'),
+                booleanParam(name: 'runFastDelivery', defaultValue: false, description: 'Set to true to run Fast Delivery Filter tests'),
+                booleanParam(name: 'runHiddenCateg', defaultValue: false, description: 'Set to true to run Hidden Categories tests'),
+                booleanParam(name: 'runMobile', defaultValue: false, description: 'Set to true to run Mobile tests')
+            ])
     stages {
         stage('Verify php version') {
             steps {
@@ -48,7 +61,7 @@ pipeline {
         stage('Run Api tests') {
             steps{
                 echo 'run test for pets'
-                bat 'php vendor/bin/codecept run tests/Api/AdelaPetsCest.php'
+                bat 'php vendor/bin/codecept run tests/Api'
             }
         }
 
