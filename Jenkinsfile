@@ -68,11 +68,11 @@ pipeline {
             steps{
                 script {
                     try {
-                        publishHTML( target : [
+                        publishHTML(target:[
                             allowMissing: false,
                             alwaysLinkToLastBuild: true,
                             keepAll: true,
-                            reportDir: 'reports',
+                            reportDir: 'tests/_output/',
                             reportFiles: 'tsl-*.html',
                             reportName: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}",
                             reportTitles: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}"
