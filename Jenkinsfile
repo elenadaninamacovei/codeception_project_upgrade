@@ -4,9 +4,10 @@ def failedTests2ndRun = []
 pipeline {
     agent any
     parameters {
-                booleanParam(name: 'runPets', defaultValue: true, description: 'Set to true to run Pets store tests')
-                booleanParam(name: 'runStore', defaultValue: false, description: 'Set to true to run Store tests')
-                booleanParam(name: 'runUsers', defaultValue: false, description: 'Set to true to run Users tests')
+        string(name: 'specificTestPath', defaultValue: '', description: '(Optional) If you dont want to run an entire directory, just add path(s) to specific tests to run separated by comma (e.g: tests/Api/AdelaPetsCest, tests/Api/AdelaUsersCest)')
+        booleanParam(name: 'runPets', defaultValue: true, description: 'Set to true to run Pets store tests')
+        booleanParam(name: 'runStore', defaultValue: false, description: 'Set to true to run Store tests')
+        booleanParam(name: 'runUsers', defaultValue: false, description: 'Set to true to run Users tests')
     }
 
     
@@ -76,6 +77,7 @@ pipeline {
                                 def runTests = [:]
 
                                 def testName = it.path.tokenize('/')[-1].replace('.php', '')
+                                echo "${testName}"
                                 runTests[it.path] = {
                                     def result = bat(script: "php vendor/bin/codecept run ${it.path} --html=tsl-${testName}.html", returnStatus: true)
                                     if (result != 0) {
