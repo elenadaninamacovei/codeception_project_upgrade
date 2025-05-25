@@ -66,19 +66,21 @@ pipeline {
         }
         stage('Generate HTML report') {
             steps{
-                try {
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'tests/_output/',
-                        reportFiles: 'tsl-*.html',
-                        reportName: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}",
-                        reportTitles: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}"
-                    ])
-                } catch (Exception e) {
-                    echo "Error when generating report: ${e.getMessage()}"
-                    currentBuild.result = 'UNSTABLE'
+                script {
+                    try {
+                        publishHTML([
+                            allowMissing: false,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'tests/_output/',
+                            reportFiles: 'tsl-*.html',
+                            reportName: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}",
+                            reportTitles: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}"
+                        ])
+                    } catch (Exception e) {
+                        echo "Error when generating report: ${e.getMessage()}"
+                        currentBuild.result = 'UNSTABLE'
+                    }
                 }
             }
         }
