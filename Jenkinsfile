@@ -70,7 +70,7 @@ pipeline {
                         echo "Running specific test(s): ${params.specificTestPath}"
                         def runSpecific = [:]
 
-                        def testPaths = params.specificTestPath.split(',').collect { it.trim() }.findAll { it }
+                        def testPaths = params.specificTestPath.split(',').collect { it.trim() }.findAll { echo"${it}" }
                         echo "${testPaths}"
                     }
                     def testSuites = [
