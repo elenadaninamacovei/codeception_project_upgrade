@@ -1,4 +1,6 @@
-
+def failedTests = []
+def failedTestsPaths = []
+def failedTests2ndRun = []
 pipeline {
     agent any
     parameters {
@@ -6,10 +8,13 @@ pipeline {
                 booleanParam(name: 'runStore', defaultValue: false, description: 'Set to true to run Store tests')
                 booleanParam(name: 'runUsers', defaultValue: false, description: 'Set to true to run Users tests')
     }
+
     
-    def failedTests = []
-    def failedTestsPaths = []
-    def failedTests2ndRun = []
+
+    environment {
+        DISABLE_AUTH = 'true'
+        DB_ENGINE    = 'sqlite'
+    }
 
     stages {
         stage('Verify php version') {
