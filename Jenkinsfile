@@ -135,7 +135,7 @@ pipeline {
                             allowMissing: false,
                             alwaysLinkToLastBuild: true,
                             keepAll: true,
-                            reportDir: 'tests\\_output',
+                            reportDir: 'tests/_output',
                             reportFiles: 'tsl-*.html',
                             reportName: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}",
                             reportTitles: "TSL-FRONT-tests-report-${env.BUILD_NUMBER}"
@@ -155,7 +155,7 @@ pipeline {
                         if (currentBuild.result == null) {
                             currentBuild.result = 'SUCCESS'
                         }
-                        def failedTestFiles = failedTests2ndRun.collect { "tests\\_output/${it}" }.join(',')
+                        def failedTestFiles = failedTests2ndRun.collect { "tests/_output/${it}" }.join(',')
                         emailext subject: "${currentBuild.result} for ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                             attachmentsPattern: failedTestFiles,
                             mimeType: "text/html",
