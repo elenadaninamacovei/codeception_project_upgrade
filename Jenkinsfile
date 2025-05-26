@@ -80,9 +80,9 @@ pipeline {
                                 runTests[it.path] = {
                                     def testName = it.path.tokenize('/')[-1]
                                     echo "${it}"
-                                    def result = bat(script: "php vendor/bin/codecept run ${it.path} --html=tsl-${it.path}.html", returnStatus: true)
+                                    def result = bat(script: "php vendor/bin/codecept run ${it.path} --html=tsl-${testName}.html", returnStatus: true)
                                     if (result != 0) {
-                                        failedTests.add("tsl-${it.path}.html")
+                                        failedTests.add("tsl-${testName}.html")
                                         failedTestsPaths.add(it.path)
                                     }
                                 }
