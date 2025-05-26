@@ -10,13 +10,6 @@ pipeline {
         booleanParam(name: 'runUsers', defaultValue: false, description: 'Set to true to run Users tests')
     }
 
-    
-
-    environment {
-        DISABLE_AUTH = 'true'
-        DB_ENGINE    = 'sqlite'
-    }
-
     stages {
         stage('Verify php version') {
             steps {
@@ -63,7 +56,7 @@ pipeline {
         }
         stage('Run tests (parallel)') {
             steps {
-                
+
                 script {
                     def testSuites = [:]
                     if(params.specificTestPath?.trim()){
@@ -85,6 +78,9 @@ pipeline {
                                 def runTests = [:]
                                 
                                 runTests[it.path] = {
+                                    def testName = it.path.tokenize('/')[-1]
+                                    echo "${testName}"
+                                    echo "${it.path}"
                                     def result = bat(script: "php vendor/bin/codecept run ${it.path} --html=tsl-${it.path}.html", returnStatus: true)
                                     if (result != 0) {
                                         failedTests.add("tsl-${it.path}.html")
@@ -116,7 +112,7 @@ pipeline {
                         echo "Re-running failed tests: ${failedTestsPaths}"
 
                         failedTestsPaths.each { testPath ->
-                            def testName = testPath.tokenize('/')[-1].replace('.php', '')
+                            def testName = testPath.tokenize('/')[-1]
                             def result = bat(script: "php vendor/bin/codecept run ${testPath} --html=tsl-${testName}.html", returnStatus: true)
                             if (result != 0) {
                                 echo "Test failed again: ${testPath}"
