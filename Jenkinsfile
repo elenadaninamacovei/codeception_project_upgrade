@@ -163,7 +163,7 @@ pipeline {
                                     <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>
                                     """,
                             recipientProviders: [requestor()],
-                            to: 'adelaboldeanu109@gmail.com'
+                            to: 'adela.boldeanu@yahoo.ro'
                     } catch (Exception e) {
                         echo "Error when sending email: ${e.getMessage()}"
                     }
